@@ -31,29 +31,6 @@ Then open:
 http://localhost:8000
 ```
 
-## Snipe-IT setup
-
-1. Enter your Snipe-IT base URL, e.g. `https://snipeit.example.com`.
-2. Paste your API token.
-3. Load or choose the model and location values.
-4. Scan or type a 10-digit code.
-5. Click `Send to Snipe-IT` or let auto-sync handle it.
-
-The app sends a payload like:
-
-```json
-{
-  "model_id": 38,
-  "asset_tag": "3112301001",
-  "status_id": 1,
-  "serial": "1001",
-  "location_id": 31,
-  "name": " 1001"
-}
-```
-
-This mirrors the Python logic from the original project. If the Snipe-IT instance blocks browser CORS requests, a tiny proxy/back-end layer is still required.
-
 ## Features
 
 - 10-digit asset-code scanner
