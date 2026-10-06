@@ -1,7 +1,15 @@
 const STORAGE_KEY = 'asset-scan-v1';
 const SETTINGS_KEY = 'asset-scan-settings-v1';
 const MAX_LOG_ITEMS = 200;
+const DEFAULT_SNIPE_BASE_URL = 'http://womit-snipeit.westeurope.azurecontainer.io/';
+const DEFAULT_SNIPE_API_TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMzU0YTE1ZWQ5MDQwZGEwZThhZWQ4ZGY1NzZkZmE5Y2E4MWU2MzhlM2NjNWIzNWQxOTk4YTczMTVlZGNhYzQzYWI3YWU2ZmFkM2E4OWU4ODIiLCJpYXQiOjE3OTEyODU0OTQuNjU3MTI0LCJuYmYiOjE3OTEyODU0OTQuNjU3MTI2LCJleHAiOjI0MjI0Mzc0OTQuNjI0NTkxLCJzdWIiOiIyMDEwIiwic2NvcGVzIjpbXX0.3CLeOMsI-5EUrUDupWNPDmdM-YTDUJOg8yWLy0KFMIJr8b0kkvMsoDIhyvzNFTrv8lIRl5F-I3ZKGJS2xAg9RJ4G7LtETIQrTsDsWv7GU7cTzDjqIi-5AE6iBKiBI9FapZrXRMNXWaPvcNspDeYaGyK8AXJDizImYE3SxcjlutUCQ2-S62QYG8ZiEV3IV06j6mnA1KvsoIMGWWdt626P-Do3sTeO5sXykIHrkIcOoqxwUl9XmiYiCF9FWPUDkHfK4Wd93O7bxppMJhkSFBXBUngibIi3VfRaOL8qbfwteIn70y8ItsRXGhZgJvP4nw0KjffJWLKFqxu0XqOtZ119v-jl-AAw8k0wEuHv5hPh2XTa49TZDIQahyWFsomcujFjDXYPil8C1AyOoWTcaRtZ6pH8tnvJg8-8bVPDtpL1XAgxStUSGcjcALyTComVRUwbGM78AL84tjWccvulDqK0P0oQUGEHKMIHMtRA63c5rYdIAwzXSqMchx0gBVez_l3a0kc2hbBI7sPw5bbKdxM2nsa4vmMtrM5oS-LaOffRaWIKacrxJ-mh8jp8KVed_SRE0-ir_kxKpqDpeQJCWVFI9naZelBFw_tY49Ti_4q1jhAh39CDY_oquVoe1bM2p_Vj4noOn2cuCmA1JNQLy_Fz4cxnKCsDtq8vuQw3geyf-zU';
 
+const toast = document.getElementById('toast');
+const snipeBaseUrl = document.getElementById('snipeBaseUrl');
+const snipeApiToken = document.getElementById('snipeApiToken');
+const snipeUser = document.getElementById('snipeUser');
+const snipeLocation = document.getElementById('snipeLocation');
+const snipeStatus = document.getElementById('snipeStatus');
 const scanInput = document.getElementById('scanInput');
 const modelSelect = document.getElementById('modelSelect');
 const locationSelect = document.getElementById('locationSelect');
@@ -12,11 +20,6 @@ const sendSnipeButton = document.getElementById('sendSnipeButton');
 const clearButton = document.getElementById('clearButton');
 const exportButton = document.getElementById('exportButton');
 const autoSyncToggle = document.getElementById('autoSyncToggle');
-const snipeBaseUrl = document.getElementById('snipeBaseUrl');
-const snipeApiToken = document.getElementById('snipeApiToken');
-const snipeUser = document.getElementById('snipeUser');
-const snipeLocation = document.getElementById('snipeLocation');
-const snipeStatus = document.getElementById('snipeStatus');
 const totalEntries = document.getElementById('totalEntries');
 const totalUnits = document.getElementById('totalUnits');
 const uniqueCodes = document.getElementById('uniqueCodes');
@@ -55,16 +58,6 @@ function initialize() {
   });
 
   autoSyncToggle.addEventListener('change', saveSettings);
-  snipeBaseUrl.addEventListener('input', () => {
-    saveSettings();
-    refreshSnipeOptions();
-  });
-  snipeApiToken.addEventListener('input', () => {
-    saveSettings();
-    refreshSnipeOptions();
-  });
-  snipeUser.addEventListener('input', saveSettings);
-  snipeLocation.addEventListener('input', saveSettings);
   modelSelect.addEventListener('change', saveSettings);
   locationSelect.addEventListener('change', saveSettings);
   statusSelect.addEventListener('change', saveSettings);
@@ -106,11 +99,11 @@ function loadSettings() {
 function saveSettings() {
   const settings = {
     autoSync: autoSyncToggle.checked,
-    baseUrl: snipeBaseUrl.value.trim(),
-    apiToken: snipeApiToken.value.trim(),
     modelId: modelSelect.value,
     locationId: locationSelect.value,
     statusId: statusSelect.value,
+    baseUrl: snipeBaseUrl.value.trim(),
+    apiToken: snipeApiToken.value.trim(),
     user: snipeUser.value.trim(),
     locationOverride: snipeLocation.value.trim(),
   };
@@ -125,11 +118,13 @@ function saveSettings() {
 function hydrateSettings() {
   const settings = loadSettings();
   autoSyncToggle.checked = settings.autoSync !== false;
-  snipeBaseUrl.value = settings.baseUrl || '';
-  snipeApiToken.value = settings.apiToken || '';
+  snipeBaseUrl.value = settings.baseUrl || DEFAULT_SNIPE_BASE_URL;
+  snipeApiToken.value = settings.apiToken || DEFAULT_SNIPE_API_TOKEN;
   snipeUser.value = settings.user || '';
   snipeLocation.value = settings.locationOverride || '';
   statusSelect.value = settings.statusId || '1';
+  snipeBaseUrl.readOnly = true;
+  snipeApiToken.readOnly = true;
 
   modelSelect.innerHTML = '<option value="38">Default model (38)</option>';
   locationSelect.innerHTML = '<option value="1">Default location (1)</option>';
@@ -138,8 +133,24 @@ function hydrateSettings() {
 }
 
 function setSnipeStatus(message, isError = false) {
-  snipeStatus.textContent = message;
-  snipeStatus.style.color = isError ? '#cc3d57' : '#5d6b78';
+  if (snipeStatus) {
+    snipeStatus.textContent = message;
+    snipeStatus.style.color = isError ? '#cc3d57' : '#5d6b78';
+  }
+  showToast(message, isError);
+}
+
+function showToast(message, isError = false) {
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.remove('show', 'success', 'error');
+  toast.classList.add(isError ? 'error' : 'success', 'show');
+
+  clearTimeout(showToast.timeoutId);
+  showToast.timeoutId = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2800);
 }
 
 async function refreshSnipeOptions() {
@@ -284,11 +295,11 @@ async function sendCurrentValueToSnipe() {
 }
 
 async function sendAssetToSnipe(payload, note) {
-  const baseUrl = snipeBaseUrl.value.trim();
-  const token = snipeApiToken.value.trim();
+  const baseUrl = snipeBaseUrl.value.trim() || DEFAULT_SNIPE_BASE_URL;
+  const token = snipeApiToken.value.trim() || DEFAULT_SNIPE_API_TOKEN;
 
   if (!baseUrl || !token) {
-    throw new Error('Add your Snipe-IT base URL and API token before syncing.');
+    throw new Error('The Snipe-IT base URL and API token are not configured.');
   }
 
   const normalizedBase = baseUrl.replace(/\/$/, '');
@@ -382,7 +393,6 @@ function exportCsv() {
   const csvContent = [headers, ...rows]
     .map((row) => row.map(escapeCsv).join(','))
     .join('\n');
-
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');

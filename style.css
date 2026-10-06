@@ -173,6 +173,46 @@ select:focus {
   font-size: 1rem;
 }
 
+.managed-note {
+  margin: -4px 0 12px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.hidden-settings {
+  display: none !important;
+}
+
+.toast {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(23, 33, 43, 0.96);
+  color: #fff;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 20;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast.error {
+  background: rgba(204, 61, 87, 0.96);
+}
+
+.toast.success {
+  background: rgba(15, 159, 110, 0.96);
+}
+
 button {
   border: 0;
   border-radius: 12px;

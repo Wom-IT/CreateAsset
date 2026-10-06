@@ -80,38 +80,37 @@
             </label>
           </div>
 
-          <div class="settings-box">
-            <h3>Snipe-IT settings</h3>
-
-            <div class="field-group">
-              <label for="snipeBaseUrl">Base URL</label>
-              <input id="snipeBaseUrl" type="url" placeholder="https://snipeit.example.com" />
-            </div>
-
-            <div class="field-group">
-              <label for="snipeApiToken">API token</label>
-              <input id="snipeApiToken" type="password" placeholder="Paste token" />
-            </div>
-
-            <div class="field-row">
-              <div class="field-group inline">
-                <label for="snipeUser">User / assignee</label>
-                <input id="snipeUser" type="text" placeholder="Optional user" />
-              </div>
-
-              <div class="field-group inline">
-                <label for="snipeLocation">Custom location</label>
-                <input id="snipeLocation" type="text" placeholder="Optional location" />
-              </div>
-            </div>
-
-            <p id="snipeStatus" class="helper-text">Enter the Snipe-IT URL and API token to create assets from the scanned code.</p>
-          </div>
-
           <div class="camera-box">
             <button id="cameraButton" class="secondary" type="button">Use camera scanner</button>
             <video id="cameraPreview" autoplay playsinline muted hidden></video>
             <p id="cameraStatus" class="helper-text">Camera scan is optional and works when browser support is available.</p>
+          </div>
+
+          <div class="settings-box hidden-settings" aria-hidden="true">
+            <h3>Snipe-IT connection</h3>
+            <p class="managed-note">Managed by the app.</p>
+
+            <div class="field-group">
+              <label for="snipeBaseUrl">Base URL</label>
+              <input id="snipeBaseUrl" name="snipeBaseUrl" type="text" readonly />
+            </div>
+
+            <div class="field-group">
+              <label for="snipeApiToken">API token</label>
+              <input id="snipeApiToken" name="snipeApiToken" type="text" readonly />
+            </div>
+
+            <div class="field-group">
+              <label for="snipeUser">Service account user</label>
+              <input id="snipeUser" name="snipeUser" type="text" readonly />
+            </div>
+
+            <div class="field-group">
+              <label for="snipeLocation">Location override</label>
+              <input id="snipeLocation" name="snipeLocation" type="text" readonly />
+            </div>
+
+            <div id="snipeStatus" class="helper-text" aria-live="polite"></div>
           </div>
         </section>
 
@@ -152,6 +151,8 @@
         </section>
       </main>
     </div>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <script src="script.js"></script>
   </body>
