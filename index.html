@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asset Scan</title>
+    <meta
+      name="description"
+      content="Static asset scanner for Snipe-IT asset creation and lookup."
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Static web app</p>
+          <h1>Asset Scan</h1>
+        </div>
+        <span class="status-pill">Snipe-IT ready</span>
+      </header>
+
+      <main class="layout">
+        <section class="panel form-panel">
+          <h2>Scan asset code</h2>
+
+          <div class="field-group">
+            <label for="scanInput">10-digit asset code</label>
+            <input
+              id="scanInput"
+              name="scanInput"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="e.g. 3112301001"
+            />
+          </div>
+
+          <div class="field-row">
+            <div class="field-group inline">
+              <label for="modelSelect">Model</label>
+              <select id="modelSelect"></select>
+            </div>
+
+            <div class="field-group inline">
+              <label for="locationSelect">Location</label>
+              <select id="locationSelect"></select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field-group inline">
+              <label for="statusSelect">Status</label>
+              <select id="statusSelect">
+                <option value="1">Ready</option>
+                <option value="2">Deployed</option>
+                <option value="3">Archived</option>
+                <option value="4">Pending</option>
+                <option value="5">Broken</option>
+              </select>
+            </div>
+
+            <div class="field-group inline wide">
+              <label for="noteInput">Note</label>
+              <input id="noteInput" name="noteInput" type="text" placeholder="Optional" />
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button id="addButton" class="primary" type="button">Add local entry</button>
+            <button id="sendSnipeButton" class="secondary" type="button">Send to Snipe-IT</button>
+            <button id="clearButton" class="ghost" type="button">Clear log</button>
+          </div>
+
+          <div class="sync-toggle-row">
+            <label class="checkbox-row" for="autoSyncToggle">
+              <input id="autoSyncToggle" type="checkbox" checked />
+              <span>Auto-send new scans to Snipe-IT</span>
+            </label>
+          </div>
+
+          <div class="settings-box">
+            <h3>Snipe-IT settings</h3>
+
+            <div class="field-group">
+              <label for="snipeBaseUrl">Base URL</label>
+              <input id="snipeBaseUrl" type="url" placeholder="https://snipeit.example.com" />
+            </div>
+
+            <div class="field-group">
+              <label for="snipeApiToken">API token</label>
+              <input id="snipeApiToken" type="password" placeholder="Paste token" />
+            </div>
+
+            <div class="field-row">
+              <div class="field-group inline">
+                <label for="snipeUser">User / assignee</label>
+                <input id="snipeUser" type="text" placeholder="Optional user" />
+              </div>
+
+              <div class="field-group inline">
+                <label for="snipeLocation">Custom location</label>
+                <input id="snipeLocation" type="text" placeholder="Optional location" />
+              </div>
+            </div>
+
+            <p id="snipeStatus" class="helper-text">Enter the Snipe-IT URL and API token to create assets from the scanned code.</p>
+          </div>
+
+          <div class="camera-box">
+            <button id="cameraButton" class="secondary" type="button">Use camera scanner</button>
+            <video id="cameraPreview" autoplay playsinline muted hidden></video>
+            <p id="cameraStatus" class="helper-text">Camera scan is optional and works when browser support is available.</p>
+          </div>
+        </section>
+
+        <aside class="panel stats-panel">
+          <h2>Overview</h2>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span>Total entries</span>
+              <strong id="totalEntries">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>Units</span>
+              <strong id="totalUnits">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>Unique IDs</span>
+              <strong id="uniqueCodes">0</strong>
+            </div>
+            <div class="stat-card">
+              <span>Last scan</span>
+              <strong id="lastScan">—</strong>
+            </div>
+          </div>
+
+          <div class="export-box">
+            <button id="exportButton" class="secondary" type="button">Download CSV</button>
+          </div>
+        </aside>
+
+        <section class="panel log-panel">
+          <div class="log-header">
+            <h2>Recent scans</h2>
+            <span id="entryCountText" class="muted">0 entries</span>
+          </div>
+
+          <ul id="scanList" class="scan-list" aria-live="polite"></ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

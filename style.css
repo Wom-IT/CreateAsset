@@ -1,0 +1,379 @@
+:root {
+  --bg: #f4f6f8;
+  --panel: #ffffff;
+  --panel-alt: #eef3f8;
+  --ink: #17212b;
+  --muted: #5d6b78;
+  --line: #d9e3eb;
+  --accent: #155eef;
+  --accent-strong: #0d4bd3;
+  --success: #0f9f6e;
+  --danger: #cc3d57;
+  --shadow: 0 14px 32px rgba(18, 32, 46, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  min-height: 100vh;
+  padding: 28px 20px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app-shell {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 20px;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 22px;
+}
+
+.form-panel {
+  grid-column: 1;
+}
+
+.stats-panel {
+  grid-column: 2;
+}
+
+.log-panel {
+  grid-column: 1 / -1;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+}
+
+label {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  padding: 12px 14px;
+  color: var(--ink);
+}
+
+select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+input:focus,
+select:focus {
+  outline: 2px solid rgba(21, 94, 239, 0.12);
+  border-color: var(--accent);
+}
+
+.button-row,
+.export-box {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.sync-toggle-row {
+  margin: 12px 0 18px;
+}
+
+.checkbox-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+.checkbox-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.settings-box {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel-alt);
+}
+
+.settings-box h3 {
+  margin: 0 0 12px;
+  font-size: 1rem;
+}
+
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.primary {
+  background: var(--accent);
+  color: white;
+}
+
+.primary:hover {
+  background: var(--accent-strong);
+}
+
+.secondary {
+  background: var(--panel-alt);
+  color: var(--ink);
+}
+
+.ghost {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.camera-box {
+  margin-top: 18px;
+}
+
+#cameraPreview {
+  width: 100%;
+  max-height: 260px;
+  margin-top: 14px;
+  border-radius: 16px;
+  background: #111;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+
+.helper-text,
+.muted {
+  color: var(--muted);
+}
+
+.helper-text {
+  margin: 12px 0 0;
+  font-size: 0.9rem;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(15, 159, 110, 0.1);
+  color: var(--success);
+  border: 1px solid rgba(15, 159, 110, 0.15);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.stat-card {
+  background: var(--panel-alt);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-card span {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.stat-card strong {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+}
+
+.log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.scan-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.scan-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel-alt);
+  padding: 12px 14px;
+}
+
+.scan-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: rgba(21, 94, 239, 0.12);
+  color: var(--accent-strong);
+  font-weight: 700;
+}
+
+.scan-main {
+  min-width: 0;
+}
+
+.scan-main strong,
+.scan-main span {
+  display: block;
+}
+
+.scan-main strong {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.scan-main span {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.scan-qty {
+  font-weight: 700;
+  color: var(--success);
+}
+
+.scan-time {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.empty-state {
+  margin: 0;
+  padding: 18px;
+  background: var(--panel-alt);
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-panel,
+  .form-panel,
+  .log-panel {
+    grid-column: 1;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar,
+  .log-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .scan-item {
+    grid-template-columns: auto 1fr;
+  }
+
+  .scan-qty,
+  .scan-time {
+    grid-column: 2;
+  }
+}
