@@ -438,8 +438,14 @@ async function toggleCameraScanner() {
     return;
   }
 
-  if (!('BarcodeDetector' in window)) {
-    cameraStatus.textContent = 'This browser does not support camera barcode scanning.';
+  const supportsCameraScanning =
+    window.isSecureContext &&
+    !!navigator.mediaDevices?.getUserMedia &&
+    'BarcodeDetector' in window;
+
+  if (!supportsCameraScanning) {
+    cameraStatus.textContent =
+      'Camera scanning requires HTTPS or localhost and a modern Chrome/Edge browser with BarcodeDetector support.';
     return;
   }
 
